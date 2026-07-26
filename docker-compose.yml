@@ -1,0 +1,42 @@
+# ==============================================================================
+# DEVELOPMENT CONFIGURATION
+# ==============================================================================
+# This configuration is designed for local development.
+# It mounts the source code into the container to enable Hot Reloading (HMR).
+
+version: '3.8'
+
+services:
+  frontend:
+    container_name: civilsense-frontend-dev
+    # We use a standard node image for dev, no need to build the multi-stage Dockerfile
+    image: node:22-alpine
+    working_dir: /app
+    
+    # Command to install dependencies (if missing) and start the Next.js dev server
+    command: sh -c "npm install && npm run dev"
+    
+    # Expose the application on port 3000
+    ports:
+      - "3000:3000"
+      
+    volumes:
+      # Bind mount the frontend directory to /app for Hot Reloading
+      - ./frontend:/app
+      
+      # Use an anonymous volume for node_modules.
+      # This prevents native bindings compiled in the container from bleeding into 
+      # the host machine, and avoids performance issues with syncing large directories.
+      - frontend-node-modules:/app/node_modules
+      
+    environment:
+      # Set Node environment to development
+      - NODE_ENV=development
+      # Disable Next.js telemetry
+      - NEXT_TELEMETRY_DISABLED=1
+      # Force Next.js to use polling for file changes (useful for Windows/WSL2 Docker setups)
+      - WATCHPACK_POLLING=true 
+      
+volumes:
+  # Declare the named volume for node_modules
+  frontend-node-modules:

@@ -1,0 +1,31 @@
+# Ignore node_modules as they will be installed inside the container
+node_modules
+npm-debug.log
+
+# Ignore the build output
+.next
+out
+build
+
+# Ignore git and docker configurations
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.prod.yml
+
+# Ignore environment files containing secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore Next.js telemetry
+.next/telemetry
+
+# Ignore markdown files and other docs
+README.md
+AGENTS.md
+CLAUDE.md
